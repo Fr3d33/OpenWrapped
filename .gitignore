@@ -1,0 +1,21 @@
+# Node
+node_modules/
+dist/
+.DS_Store
+.env
+bun.lock
+package-lock.json
+
+# Python
+venv/
+__pycache__/
+*.pyc
+
+# Electron
+out/
+*.exe
+*.asar
+
+# Local database
+*.db
+

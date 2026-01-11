@@ -1,0 +1,35 @@
+{
+  "name": "openwrapped-electron",
+  "version": "1.0.0",
+  "description": "Track and analyze your application usage with beautiful statistics",
+  "author": "Fr3d33",
+  "main": "electron/main.js",
+  "scripts": {
+    "start": "electron .",
+    "package": "electron-builder",
+    "package:win": "electron-builder --win"
+  },
+  "build": {
+    "appId": "com.openwrapped.app",
+    "productName": "OpenWrapped",
+    "asar": true,
+    "asarUnpack": [
+      "backend/dist/**"
+    ],
+    "win": {
+        "target": "nsis",
+        "icon": "icon.ico"
+    },
+    "files": [
+      "electron/**/*",
+      "frontend/dist/**/*",
+      "backend/**/*",
+      "!backend/__pycache__",
+      "!backend/**/__pycache__"
+    ]
+  },
+  "devDependencies": {
+    "electron": "^39.2.7",
+    "electron-builder": "^26.4.0"
+  }
+}
