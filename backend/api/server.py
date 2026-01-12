@@ -3,12 +3,12 @@ from flask_cors import CORS
 from backend.analytics.aggregate import total_time_per_app
 
 app = Flask(__name__)
-CORS(app)  # Aktiviere CORS für alle Routes
+CORS(app)  # Enable CORS for all routes
 
 @app.route("/stats", methods=["GET"])
 def stats():
     data = total_time_per_app()
-    print(f"Sending {len(data)} stats to frontend")  # Debug-Output
+    print(f"Sending {len(data)} stats to frontend")  # Debug output
     return jsonify(data)
 
 if __name__ == "__main__":

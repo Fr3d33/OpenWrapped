@@ -1,43 +1,44 @@
 # OpenWrapped
 
-OpenWrapped ist ein App-Usage-Tracker für Windows. Es besteht aus einem Python-Backend, das die Nutzung aktiver Apps trackt und die Daten in einer SQLite-Datenbank speichert, sowie einem Electron-Frontend mit React zur Anzeige der Daten.
+OpenWrapped is an app usage tracker for Windows. It consists of a Python backend that tracks active app usage and stores the data in a SQLite database, as well as an Electron frontend with React for displaying the data.
 
 ## Features
 
-- Trackt aktive Anwendungen auf Windows
-- Speichert Nutzungsdaten in einer SQLite-Datenbank
-- Übersichtliches Electron + React Frontend
-- Windows Installer via Electron-Builder
+- Tracks active applications on Windows
+- Stores usage data in a SQLite database
+- Clean Electron + React frontend
+- Windows installer via Electron-Builder
 
 ## Installation
 
-### Voraussetzungen
+### Prerequisites
 
 - Python 3.10+
 - Node.js 18+ / npm
 - Electron
-- SQLite3 (optional, für direkte DB-Tests)
+- SQLite3 (optional, for direct DB testing)
 
-### Repository klonen
+### Clone Repository
 
 ```bash
-git clone https://github.com/deinusername/OpenWrapped.git
+git clone https://github.com/yourusername/OpenWrapped.git
 cd OpenWrapped
-````
+```
 
-### Backend starten
+### Start Backend
 
 ```bash
 cd backend
 python -m venv venv
 .\venv\Scripts\activate   # Windows
 pip install -r requirements.txt
-python main.py            # Erststart: DB wird automatisch erstellt
+cd ..
+<your-directory>/OpenWrapped/.venv/Scripts/python.exe -m backend.api.server # Erststart: DB wird automatisch erstellt
 ```
 
 **Hinweis:** Die Datenbank `openwrapped.db` wird automatisch erstellt und sollte **nicht** ins Repository gepusht werden.
 
-### Frontend starten
+### Start Frontend
 
 ```bash
 cd ../frontend
@@ -45,9 +46,9 @@ npm install
 npm run dev
 ```
 
-Das Frontend läuft dann unter `http://localhost:5173`.
+The frontend will then run at `http://localhost:5173`.
 
-## Produktion / Installer erstellen
+## Production / Create Installer
 
 1. Alle OpenWrapped-Prozesse beenden.
 2. Alte Builds löschen:
@@ -65,23 +66,23 @@ npx electron-builder --win nsis
 
 Der Installer wird im Ordner `dist/` erstellt (z.B. `OpenWrapped Setup.exe`).
 
-## Datenbankstruktur
+## Database Structure
 
-Datei: `openwrapped.db`
-Tabelle: `usage`
+File: `openwrapped.db`
+Table: `usage`
 
-| Spalte    | Typ     | Beschreibung               |
-| --------- | ------- | -------------------------- |
-| id        | INTEGER | Primärschlüssel            |
-| app       | TEXT    | Name der Anwendung         |
-| duration  | REAL    | Nutzung in Sekunden        |
-| timestamp | TEXT    | Zeitpunkt der Aufzeichnung |
+| Column    | Type    | Description           |
+| --------- | ------- | --------------------- |
+| id        | INTEGER | Primary key           |
+| app       | TEXT    | Application name      |
+| duration  | REAL    | Usage in seconds      |
+| timestamp | TEXT    | Recording timestamp   |
 
-Die Datenbank wird automatisch vom Backend initialisiert.
+The database is initialized automatically by the backend.
 
 ## GitHub Setup
 
-* `.gitignore` sollte folgende Dateien/Ordner enthalten:
+* `.gitignore` should contain the following files/folders:
 
   * `openwrapped.db`
   * `dist/`
@@ -90,7 +91,7 @@ Die Datenbank wird automatisch vom Backend initialisiert.
 
 ## Troubleshooting
 
-* **BrowserWindow is not defined** → Prüfe Tippfehler in `main.js`: `const { app, BrowserWindow } = require('electron');`
-* **App startet nicht / exe wird gesperrt** → Alle Electron/Node-Prozesse beenden, ggf. Neustart, dann Build erneut starten.
-* **Datenbankzugriff** → Stelle sicher, dass `openwrapped.db` vom Backend gefunden wird oder initialisiere sie mit `init_db()`.
+* **BrowserWindow is not defined** → Check for typos in `main.js`: `const { app, BrowserWindow } = require('electron');`
+* **App won't start / exe is blocked** → Close all Electron/Node processes, restart if necessary, then start build again.
+* **Database access** → Make sure `openwrapped.db` is found by the backend or initialize it with `init_db()`.
 

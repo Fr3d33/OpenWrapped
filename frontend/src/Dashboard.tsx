@@ -30,14 +30,14 @@ export default function Dashboard() {
     const fetchStats = async () => {
       try {
         const res = await fetch('http://localhost:8000/stats');
-        if (!res.ok) throw new Error('Server antwortet nicht');
+        if (!res.ok) throw new Error('Server not responding');
         const stats = await res.json();
         setData(stats);
         setError(null);
         setLastUpdate(new Date());
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Fehler beim Laden');
-        console.error('API Fehler:', err);
+        setError(err instanceof Error ? err.message : 'Error loading data');
+        console.error('API Error:', err);
       } finally {
         setLoading(false);
       }
@@ -52,7 +52,7 @@ export default function Dashboard() {
     return (
       <div className="loading">
         <div className="spinner"></div>
-        <p>Lade Daten...</p>
+        <p>Loading data...</p>
       </div>
     );
   }
@@ -60,9 +60,9 @@ export default function Dashboard() {
   if (error) {
     return (
       <div className="error">
-        <h2>⚠️ Fehler</h2>
+        <h2>⚠️ Error</h2>
         <p>{error}</p>
-        <p className="hint">Stelle sicher, dass der Backend-Server läuft (localhost:8000)</p>
+        <p className="hint">Make sure the backend server is running (localhost:8000)</p>
       </div>
     );
   }
@@ -70,8 +70,8 @@ export default function Dashboard() {
   if (data.length === 0) {
     return (
       <div className="empty">
-        <h2>📭 Keine Daten</h2>
-        <p>Starte die Tracker-App, um Daten zu sammeln</p>
+        <h2>📭 No Data</h2>
+        <p>Start the tracker app to collect data</p>
       </div>
     );
   }
@@ -79,20 +79,20 @@ export default function Dashboard() {
   const totalMinutes = data.reduce((sum, item) => sum + item[1] / 60, 0);
   const topApp = data[0];
 
-  // Funktion zum Bereinigen der App-Namen
+  // Function to clean up app names
   const cleanAppName = (name: string): string => {
     return name
-      .replace('.exe', '')           // Entferne .exe
-      .replace(/\.(Root|WinUI3|Store|WindowsTerminal)$/i, '')  // Entferne Suffixe wie .Root, .WinUI3, etc.
-      .replace(/\.[\w]+$/, '')        // Entferne andere Suffixe mit Punkt
-      .split('\\').pop()              // Bei Pfaden nur Dateiname
+      .replace('.exe', '')           // Remove .exe
+      .replace(/\.(Root|WinUI3|Store|WindowsTerminal)$/i, '')  // Remove suffixes like .Root, .WinUI3, etc.
+      .replace(/\.[\w]+$/, '')        // Remove other dot suffixes
+      .split('\\').pop()              // For paths, only use filename
       || name;
   };
 
   const chartData = {
     labels: data.map(item => cleanAppName(item[0])),
     datasets: [{
-      label: 'Nutzungsdauer (Minuten)',
+      label: 'Usage Duration (Minutes)',
       data: data.map(item => Math.round((item[1] / 60) * 10) / 10),
       backgroundColor: '#1a1a1a',
       borderColor: '#1a1a1a',
@@ -111,7 +111,7 @@ export default function Dashboard() {
       },
       title: {
         display: true,
-        text: 'MEISTGENUTZTE ANWENDUNGEN',
+        text: 'MOST USED APPLICATIONS',
         font: {
           size: 20,
           weight: 'bold' as const,
@@ -140,7 +140,7 @@ export default function Dashboard() {
             const mins = Math.round(minutes % 60);
             return hours > 0 
               ? `  ${hours}h ${mins}m`
-              : `  ${mins} Minuten`;
+              : `  ${mins} minutes`;
           }
         }
       }
@@ -190,11 +190,11 @@ export default function Dashboard() {
     <div className="dashboard">
       <div className="stats-cards">
         <div className="stat-card">
-          <h3>📱 Anwendungen</h3>
+          <h3>📱 Applications</h3>
           <p className="stat-value">{data.length}</p>
         </div>
         <div className="stat-card">
-          <h3>⏱️ Gesamtzeit</h3>
+          <h3>⏱️ Total Time</h3>
           <p className="stat-value">
             {Math.floor(totalMinutes / 60)}h {Math.round(totalMinutes % 60)}m
           </p>
@@ -203,7 +203,7 @@ export default function Dashboard() {
           <h3>🏆 Top App</h3>
           <p className="stat-value">{cleanAppName(topApp[0])}</p>
           <p className="stat-detail">
-            {Math.round((topApp[1] / 60) * 10) / 10} Min
+            {Math.round((topApp[1] / 60) * 10) / 10} min
           </p>
         </div>
       </div>
@@ -214,7 +214,7 @@ export default function Dashboard() {
 
       {lastUpdate && (
         <div className="last-update">
-          Letzte Aktualisierung: {lastUpdate.toLocaleTimeString('de-DE')}
+          Last update: {lastUpdate.toLocaleTimeString('en-US')}
         </div>
       )}
     </div>

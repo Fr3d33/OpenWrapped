@@ -6,7 +6,7 @@ export default function App() {
     <div className="app">
       <header className="header">
         <h1>📊 OpenWrapped</h1>
-        <p>Deine Anwendungsstatistiken in Echtzeit</p>
+        <p>Your Application Statistics in Real-Time</p>
       </header>
       <Dashboard />
     </div>
