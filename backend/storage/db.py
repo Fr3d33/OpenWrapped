@@ -1,6 +1,10 @@
-import sqlite3 
+import sqlite3
+import os
+from pathlib import Path
 
-DB_PATH = 'openwrapped.db'
+DB_DIR = Path.home() / "AppData" / "Local" / "OpenWrapped"
+DB_DIR.mkdir(parents=True, exist_ok=True)
+DB_PATH = DB_DIR / 'openwrapped.db'
 
 def connect():
     return sqlite3.connect(DB_PATH)

@@ -1,5 +1,8 @@
 from collections import defaultdict
-from backend.storage.db import connect
+try:
+    from backend.storage.db import connect
+except ImportError:
+    from storage.db import connect
 
 def total_time_per_app():
     with connect() as db:

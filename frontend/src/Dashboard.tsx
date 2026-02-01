@@ -60,7 +60,7 @@ export default function Dashboard() {
   if (error) {
     return (
       <div className="error">
-        <h2>⚠️ Error</h2>
+        <h2>Error</h2>
         <p>{error}</p>
         <p className="hint">Make sure the backend server is running (localhost:8000)</p>
       </div>
@@ -70,7 +70,7 @@ export default function Dashboard() {
   if (data.length === 0) {
     return (
       <div className="empty">
-        <h2>📭 No Data</h2>
+        <h2>No Data</h2>
         <p>Start the tracker app to collect data</p>
       </div>
     );
@@ -79,14 +79,24 @@ export default function Dashboard() {
   const totalMinutes = data.reduce((sum, item) => sum + item[1] / 60, 0);
   const topApp = data[0];
 
-  // Function to clean up app names
   const cleanAppName = (name: string): string => {
     return name
-      .replace('.exe', '')           // Remove .exe
-      .replace(/\.(Root|WinUI3|Store|WindowsTerminal)$/i, '')  // Remove suffixes like .Root, .WinUI3, etc.
-      .replace(/\.[\w]+$/, '')        // Remove other dot suffixes
-      .split('\\').pop()              // For paths, only use filename
+      .replace('.exe', '')
+      .replace(/\.(Root|WinUI3|Store|WindowsTerminal)$/i, '')
+      .replace(/\.[\w]+$/, '')
+      .split('\\').pop()
       || name;
+  };
+
+  const generateColors = (count: number): string[] => {
+    const colors = [
+      '#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8',
+      '#F7DC6F', '#BB8FCE', '#85C1E2', '#F8B739', '#52B788',
+      '#E76F51', '#2A9D8F', '#E9C46A', '#F4A261', '#264653',
+      '#8338EC', '#FB5607', '#FFBE0B', '#3A86FF', '#06D6A0'
+    ];
+    
+    return Array.from({ length: count }, (_, i) => colors[i % colors.length]);
   };
 
   const chartData = {
@@ -94,8 +104,8 @@ export default function Dashboard() {
     datasets: [{
       label: 'Usage Duration (Minutes)',
       data: data.map(item => Math.round((item[1] / 60) * 10) / 10),
-      backgroundColor: '#1a1a1a',
-      borderColor: '#1a1a1a',
+      backgroundColor: generateColors(data.length),
+      borderColor: generateColors(data.length),
       borderWidth: 0,
       borderRadius: 15,
       barThickness: 40,
@@ -190,17 +200,17 @@ export default function Dashboard() {
     <div className="dashboard">
       <div className="stats-cards">
         <div className="stat-card">
-          <h3>📱 Applications</h3>
+          <h3>Applications</h3>
           <p className="stat-value">{data.length}</p>
         </div>
         <div className="stat-card">
-          <h3>⏱️ Total Time</h3>
+          <h3>Total Time</h3>
           <p className="stat-value">
             {Math.floor(totalMinutes / 60)}h {Math.round(totalMinutes % 60)}m
           </p>
         </div>
         <div className="stat-card highlight">
-          <h3>🏆 Top App</h3>
+          <h3>Top App</h3>
           <p className="stat-value">{cleanAppName(topApp[0])}</p>
           <p className="stat-detail">
             {Math.round((topApp[1] / 60) * 10) / 10} min
